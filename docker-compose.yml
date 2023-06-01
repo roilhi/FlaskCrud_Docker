@@ -1,0 +1,39 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask_app
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ./www:/var/www/html/
+      - /tmp/app/mysqld:/run/mysqld
+    depends_on:
+      - db
+    networks:
+      flaskapp_network:
+        aliases:
+          - flask_host
+  db:
+    image: mariadb:10.4
+    container_name: mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: ejemplo_db
+      MYSQL_USER: roilhi
+      MYSQL_PASSWORD: mypsswd
+      MYSQL_ROOT_PASSWORD: psswd
+    volumes:
+      - /tmp/app/mysqld:/var/run/mysqld
+      - flaskapp_data:/var/lib/mysql
+volumes:
+  flaskapp_data: {}
+networks:
+  flaskapp_network:
+    name: flaskapp_net
+    driver: bridge

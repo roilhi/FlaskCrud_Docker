@@ -1,0 +1,15 @@
+version: '3'
+volumes:
+  data:
+services:
+  db:
+    image: mariadb:10.4
+    environment:
+      MYSQL_ROOT_PASSWORD: psswd
+      MYSQL_DATABASE: ejemplo_db
+      MYSQL_USER: roilhi
+      MYSQL_PASSWORD: mypsswd
+    volumes:
+      - data:/var/lib/mysql
+    ports:
+      - "3306:3306"
